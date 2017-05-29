@@ -207,7 +207,7 @@ void demotasks_init(void)
 	// Configure SERCOM USART for reception from EDBG Virtual COM Port
 	cdc_rx_init(&cdc_usart, &cdc_rx_handler);
 
-	display_mutex  = xSemaphoreCreateMutex();
+	display_mutex  = xSemaphoreCreateMutex();  //http://www.freertos.org/a00125.html
 	terminal_mutex = xSemaphoreCreateMutex();
 	terminal_in_queue = xQueueCreate(64, sizeof(uint8_t));
 	event_group = xEventGroupCreate();
