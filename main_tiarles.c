@@ -39,6 +39,16 @@ void usart_write_callback(struct usart_module *const usart_module)
 	port_pin_toggle_output_level(LED_0_PIN);
 }
 
+#if (SAMD || SAMR21)
+void SYSCTRL_Handler(void)
+{
+	if (SYSCTRL->INTFLAG.reg & SYSCTRL_INTFLAG_BOD33DET) {
+		SYSCTRL->INTFLAG.reg |= SYSCTRL_INTFLAG_BOD33DET;
+		eeprom_emulator_commit_page_buffer();
+	}
+}
+#endif
+
 int main(){
 	// setup
 	
