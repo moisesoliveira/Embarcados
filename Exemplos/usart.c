@@ -54,9 +54,6 @@ void configure_usart_callbacks(void)
 	usart_enable_callback(&usart_instance, USART_CALLBACK_BUFFER_RECEIVED);
 }
 
-
-
-
 int main(void)
 {
 	system_init();

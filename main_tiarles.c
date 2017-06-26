@@ -52,8 +52,12 @@ void SYSCTRL_Handler(void)
 int main(){
 	// setup
 	
-	//! Instanciação de componentes e configuração da USART
+	
+	
+	//! Instanciação de buffer, componentes e configuração da USART
 	//@{
+	
+	uint8_t rx_buffer[];
 	
 	system_init();
 		
@@ -91,7 +95,11 @@ int main(){
 			usart_write_buffer_wait(&usart_instance, upBar_button3, sizeof(upBar_button3));
 		//@}
 		
+		// Recebendo da aplicação os dados para mostrar no OLED1
+		// 	Ex. if
 		
+		usart_read_buffer_job(&usart_instance,
+				(uint8_t *)rx_buffer, MAX_RX_BUFFER_LENGTH);
 		
 	}
 
