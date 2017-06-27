@@ -138,6 +138,9 @@ src/ASF/common2/services/gfx_mono/gfx_mono_text.d \
  ../src/ASF/common2/services/gfx_mono/gfx_mono_framebuffer.h \
  ../src/ASF/common2/services/gfx_mono/gfx_mono_generic.h \
  ../src/ASF/common2/services/gfx_mono/gfx_mono_text.h ../src/asf.h \
+ ../src/ASF/sam0/drivers/bod/bod.h \
+ ../src/ASF/sam0/drivers/bod/bod_sam_d_r_h/bod_feature.h \
+ ../src/ASF/sam0/services/eeprom/emulator/main_array/eeprom.h \
  ../src/ASF/thirdparty/freertos/freertos-8.0.1/Source/include/FreeRTOS.h \
  ../src/ASF/thirdparty/freertos/freertos-8.0.1/Source/include/projdefs.h \
  ../src/config/FreeRTOSConfig.h \
@@ -161,7 +164,7 @@ src/ASF/common2/services/gfx_mono/gfx_mono_text.d \
  ../src/ASF/thirdparty/freertos/freertos-8.0.1/Source/include/timers.h \
  ../src/ASF/common2/services/gfx_mono/gfx_mono.h \
  ../src/ASF/common2/services/gfx_mono/sysfont.h \
- ../src/config/conf_sysfont.h \
+ ../src/config/conf_sysfont.h ../src/ASF/sam0/drivers/nvm/nvm.h \
  ../src/ASF/sam0/drivers/sercom/spi/spi_interrupt.h \
  ../src/ASF/sam0/drivers/sercom/spi/spi.h \
  ../src/ASF/sam0/drivers/sercom/usart/usart.h \
@@ -450,6 +453,12 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 
 ../src/asf.h:
 
+../src/ASF/sam0/drivers/bod/bod.h:
+
+../src/ASF/sam0/drivers/bod/bod_sam_d_r_h/bod_feature.h:
+
+../src/ASF/sam0/services/eeprom/emulator/main_array/eeprom.h:
+
 ../src/ASF/thirdparty/freertos/freertos-8.0.1/Source/include/FreeRTOS.h:
 
 ../src/ASF/thirdparty/freertos/freertos-8.0.1/Source/include/projdefs.h:
@@ -497,6 +506,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/ASF/common2/services/gfx_mono/sysfont.h:
 
 ../src/config/conf_sysfont.h:
+
+../src/ASF/sam0/drivers/nvm/nvm.h:
 
 ../src/ASF/sam0/drivers/sercom/spi/spi_interrupt.h:
 

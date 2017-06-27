@@ -52,12 +52,18 @@
  * running the ASF driver selector tool. Any changes will be discarded.
  */
 
+// From module: BOD - Brown Out Detector
+#include <bod.h>
+
 // From module: Common SAM0 compiler driver
 #include <compiler.h>
 #include <status_codes.h>
 
 // From module: Delay routines
 #include <delay.h>
+
+// From module: EEPROM Emulator Service
+#include <eeprom.h>
 
 // From module: FreeRTOS - kernel 8.0.1
 #include <FreeRTOS.h>
@@ -84,6 +90,9 @@
 
 // From module: Interrupt management - SAM implementation
 #include <interrupt.h>
+
+// From module: NVM - Non-Volatile Memory
+#include <nvm.h>
 
 // From module: PORT - GPIO Pin Control
 #include <port.h>

@@ -1,5 +1,5 @@
 src/main.d src/main.o: ../src/main.c ../src/asf.h \
- ../src/ASF/sam0/utils/compiler.h \
+ ../src/ASF/sam0/drivers/bod/bod.h ../src/ASF/sam0/utils/compiler.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\lib\gcc\arm-none-eabi\6.2.1\include\stddef.h \
  ../src/ASF/common/utils/parts.h ../src/ASF/sam0/utils/status_codes.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\lib\gcc\arm-none-eabi\6.2.1\include\stdint.h \
@@ -105,11 +105,13 @@ src/main.d src/main.o: ../src/main.c ../src/asf.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-none-eabi\include\alloca.h \
  ../src/ASF/common/utils/interrupt.h \
  ../src/ASF/common/utils/interrupt/interrupt_sam_nvic.h \
+ ../src/ASF/sam0/drivers/bod/bod_sam_d_r_h/bod_feature.h \
  ../src/ASF/common2/services/delay/delay.h \
  ../src/ASF/common2/services/delay/sam0/systick_counter.h \
  ../src/ASF/sam0/drivers/system/clock/clock.h \
  ../src/ASF/sam0/drivers/system/clock/gclk.h \
  ../src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da_ha1/clock_feature.h \
+ ../src/ASF/sam0/services/eeprom/emulator/main_array/eeprom.h \
  ../src/ASF/thirdparty/freertos/freertos-8.0.1/Source/include/FreeRTOS.h \
  ../src/ASF/thirdparty/freertos/freertos-8.0.1/Source/include/projdefs.h \
  ../src/config/FreeRTOSConfig.h \
@@ -159,6 +161,7 @@ src/main.d src/main.o: ../src/main.c ../src/asf.h \
  ../src/ASF/common2/services/gfx_mono/sysfont.h \
  ../src/config/conf_sysfont.h \
  ../src/ASF/common2/services/gfx_mono/gfx_mono_text.h \
+ ../src/ASF/sam0/drivers/nvm/nvm.h \
  ../src/ASF/sam0/drivers/sercom/spi/spi_interrupt.h \
  ../src/ASF/sam0/drivers/sercom/spi/spi.h \
  ../src/ASF/sam0/drivers/sercom/usart/usart.h \
@@ -169,6 +172,8 @@ src/main.d src/main.o: ../src/main.c ../src/asf.h \
  ../src/config/conf_demo.h
 
 ../src/asf.h:
+
+../src/ASF/sam0/drivers/bod/bod.h:
 
 ../src/ASF/sam0/utils/compiler.h:
 
@@ -384,6 +389,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 
 ../src/ASF/common/utils/interrupt/interrupt_sam_nvic.h:
 
+../src/ASF/sam0/drivers/bod/bod_sam_d_r_h/bod_feature.h:
+
 ../src/ASF/common2/services/delay/delay.h:
 
 ../src/ASF/common2/services/delay/sam0/systick_counter.h:
@@ -393,6 +400,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/ASF/sam0/drivers/system/clock/gclk.h:
 
 ../src/ASF/sam0/drivers/system/clock/clock_samd21_r21_da_ha1/clock_feature.h:
+
+../src/ASF/sam0/services/eeprom/emulator/main_array/eeprom.h:
 
 ../src/ASF/thirdparty/freertos/freertos-8.0.1/Source/include/FreeRTOS.h:
 
@@ -493,6 +502,8 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\arm\arm-gnu-toolchain\arm-no
 ../src/config/conf_sysfont.h:
 
 ../src/ASF/common2/services/gfx_mono/gfx_mono_text.h:
+
+../src/ASF/sam0/drivers/nvm/nvm.h:
 
 ../src/ASF/sam0/drivers/sercom/spi/spi_interrupt.h:
 

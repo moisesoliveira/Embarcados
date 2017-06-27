@@ -2,6 +2,12 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
+src\ASF\sam0\drivers\bod\bod_sam_d_r_h\bod.c
+
+src\ASF\sam0\drivers\nvm\nvm.c
+
+src\ASF\sam0\services\eeprom\emulator\main_array\eeprom.c
+
 src\ASF\common2\components\display\ssd1306\ssd1306.c
 
 src\ASF\common2\services\delay\sam0\systick_counter.c
