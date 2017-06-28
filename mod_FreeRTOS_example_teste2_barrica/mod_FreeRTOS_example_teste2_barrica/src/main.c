@@ -1,6 +1,11 @@
 #include <asf.h>
 #include <stdio.h>
 #include <conf_demo.h>
+#include <string.h>
+#define MAX_RX_BUFFER_LENGTH   9
+#define MAX_PLACAR             18
+
+volatile uint8_t rx_buffer[MAX_RX_BUFFER_LENGTH];
 
 void configure_usart(void);
 void configure_eeprom(void);
@@ -91,76 +96,83 @@ int main (void)
 	char pressButton2[] = "SAMR21_barDown       ";
 	char pressButton3[] = "SAMR21_resetEEPROM...";	// Escreve no máximo 21 caracteres por linha
 	
-	//char secondLine[]   = "Mina seus cabelo e da";
-	//char thirthLine[]   = "hora, seu corpao viol";
-	
-	uint8_t i;
-	
-	/*
-	for(i = 0; i < sizeof(secondLine) - 1; i++)
-		gfx_mono_draw_char(secondLine[i], i*SYSFONT_WIDTH, 1*SYSFONT_HEIGHT, &sysfont);
-	
-	for(i = 0; i < sizeof(thirthLine) - 1; i++)
-		gfx_mono_draw_char(thirthLine[i], i*SYSFONT_WIDTH, 2*SYSFONT_HEIGHT, &sysfont);
-		
-	for(i = 0; i < sizeof(secondLine) - 1; i++)
-		gfx_mono_draw_char(secondLine[i], i*SYSFONT_WIDTH, 3*SYSFONT_HEIGHT, &sysfont);
-	*/
-	
-	//EEPROM
-	
-	// Valores para a EEPROM (Esses virão da USART)
-	
-	uint8_t jogador1 = 6;
-	uint8_t jogador2 = 2;
-	uint8_t auxJogador1;
-	uint8_t auxJogador2;
-	
+	uint8_t i;	
 	uint8_t page_data[EEPROM_PAGE_SIZE];
-	
-	//char placar[] = "Placar: ";
-	char placar[18];
-		
-	//    page_data[0] <= placar do jogador1
-	//    page_data[1] <= placar do jogador2
-	
-	page_data[0] = jogador1;
-	page_data[1] = jogador2;
-	
-	eeprom_emulator_write_page(0, page_data);
-	page_data[0] = 255;
-	page_data[1] = 255;
-	
-	eeprom_emulator_read_page(0, page_data);
-	
-	sprintf(placar, "Placar: %.3d x %.3d\n", page_data[0], page_data[1]);
-	
-	for(i = 0; i < sizeof(placar) - 1; i++)
-		gfx_mono_draw_char(placar[i], i*SYSFONT_WIDTH, 0, &sysfont);
-	
+	uint8_t placar[] = "Placar: ";
+	uint8_t ox[]     = " x ";
+
 	do {
+		
+		for(i = 0; i < sizeof(rx_buffer) - 1; i++)
+			rx_buffer[i] = 0;
+			
+		//usart_read_buffer_job(&usart_instance, (uint8_t *)rx_buffer, MAX_RX_BUFFER_LENGTH);
+		usart_read_buffer_wait (&usart_instance, rx_buffer, MAX_RX_BUFFER_LENGTH);
+		if(rx_buffer[0] == 'p'){
+			page_data[0] = rx_buffer[1];
+			page_data[1] = rx_buffer[2];
+			page_data[2] = rx_buffer[3];
+			
+			page_data[3] = rx_buffer[5];
+			page_data[4] = rx_buffer[6];
+			page_data[5] = rx_buffer[7];
+				
+			eeprom_emulator_write_page(0, page_data);
+			eeprom_emulator_commit_page_buffer();
+			
+			page_data[0] = 255;
+			page_data[1] = 255;
+			page_data[2] = 255;
+			page_data[3] = 255;
+			page_data[4] = 255;
+			page_data[5] = 255;
+				
+			eeprom_emulator_read_page(0, page_data);
+			
+			for(i = 0; i < sizeof(rx_buffer) - 1; i++)
+				gfx_mono_draw_char(' ', i*SYSFONT_WIDTH, 3*SYSFONT_HEIGHT, &sysfont);
+			
+			// Desenho do placar
+			for(i = 0; i < sizeof(placar) - 1; i++)
+				gfx_mono_draw_char(placar[i], i*SYSFONT_WIDTH, 0, &sysfont);
+				
+			gfx_mono_draw_char(page_data[0], (i++)*SYSFONT_WIDTH, 0, &sysfont);
+			gfx_mono_draw_char(page_data[1], (i++)*SYSFONT_WIDTH, 0, &sysfont);
+			gfx_mono_draw_char(page_data[2], (i++)*SYSFONT_WIDTH, 0, &sysfont);
+			
+			gfx_mono_draw_char(ox[0], (i++)*SYSFONT_WIDTH, 0, &sysfont);
+			gfx_mono_draw_char(ox[1], (i++)*SYSFONT_WIDTH, 0, &sysfont);
+			gfx_mono_draw_char(ox[2], (i++)*SYSFONT_WIDTH, 0, &sysfont);
+			
+			gfx_mono_draw_char(page_data[3], (i++)*SYSFONT_WIDTH, 0, &sysfont);
+			gfx_mono_draw_char(page_data[4], (i++)*SYSFONT_WIDTH, 0, &sysfont);
+			gfx_mono_draw_char(page_data[5], i*SYSFONT_WIDTH, 0, &sysfont);
+				
+			// Fim do desenho do placar
+				
+		}
+		
 		if(oled1_get_button_state(&oled1, OLED1_BUTTON1_ID)){
 			usart_write_buffer_wait(&usart_instance, pressButton1, sizeof(pressButton1));
 			usart_write_buffer_wait(&usart_instance, '\n', 1);
 			for(i = 0; i < sizeof(pressButton1) - 1; i++)
 				gfx_mono_draw_char(pressButton1[i], i*SYSFONT_WIDTH, 2*SYSFONT_HEIGHT, &sysfont);
 			//delay_cycles_ms(50);															// Não tem necessidade o delay, eu acho
-		}
-		
-		if(oled1_get_button_state(&oled1, OLED1_BUTTON2_ID)){
+		} else if(oled1_get_button_state(&oled1, OLED1_BUTTON2_ID)){
 			usart_write_buffer_wait(&usart_instance, pressButton2, sizeof(pressButton2));
 			usart_write_buffer_wait(&usart_instance, '\n', 1);
 			for(i = 0; i < sizeof(pressButton2) - 1; i++)
 				gfx_mono_draw_char(pressButton2[i], i*SYSFONT_WIDTH, 2*SYSFONT_HEIGHT, &sysfont);
 			//delay_cycles_ms(50);															// Não tem necessidade o delay, eu acho
-		}
-		
-		if(oled1_get_button_state(&oled1, OLED1_BUTTON3_ID)){
+		} else if(oled1_get_button_state(&oled1, OLED1_BUTTON3_ID)){
 			usart_write_buffer_wait(&usart_instance, pressButton3, sizeof(pressButton3));
 			usart_write_buffer_wait(&usart_instance, '\n', 1);
 			for(i = 0; i < sizeof(pressButton3) - 1; i++)
 				gfx_mono_draw_char(pressButton3[i], i*SYSFONT_WIDTH, 2*SYSFONT_HEIGHT, &sysfont);
 			//delay_cycles_ms(50);															// Não tem necessidade o delay, eu acho
+		} else {
+			usart_write_buffer_wait(&usart_instance, "None\n", sizeof("None"));
+			usart_write_buffer_wait(&usart_instance, '\n', 1);
 		}
 	} while (true);
 }
