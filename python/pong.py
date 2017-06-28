@@ -2,6 +2,7 @@ import pygame
 import random
 import os
 from pygame.locals import *
+
 import serial
     
 class Game:

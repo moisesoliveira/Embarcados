@@ -96,10 +96,12 @@ int main (void)
 	char pressButton2[] = "SAMR21_barDown       ";
 	char pressButton3[] = "SAMR21_resetEEPROM...";	// Escreve no máximo 21 caracteres por linha
 	
-	uint8_t i;	
+	uint8_t i;
 	uint8_t page_data[EEPROM_PAGE_SIZE];
+
 	uint8_t placar[] = "Placar: ";
-	uint8_t ox[]     = " x ";
+	uint8_t ox[]     = " x ";// + a info da EEPROM
+
 
 	do {
 		
