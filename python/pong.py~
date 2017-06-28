@@ -62,28 +62,18 @@ class Game:
 
         if self.ser.readable():
             read = self.ser.read(23)
+            send = ''
             if 'U' in read:
-                print self.player2.y
-                self.player2.y = self.player2.y - 10
-                self.ser.flush()
-            if 'o' in read:
-                print 'down'
-                self.player2.y = self.player2.y + 10
-                self.ser.flush()
-            else:
-                pass
-                #self.player2.move("stop")
-#        if event.type == KEYDOWN:
-#            if event.key == K_UP:
-#                self.player2.move("up")
-#            elif event.key == K_DOWN:
-#                self.player2.move("down")
-#        if event.type == KEYUP:
-#            if event.key == K_UP:
-#                self.player2.move("stop")
-#            elif event.key == K_DOWN:
-#                self.player2.move("stop")
-
+                self.player2.move("up")
+            if 'D' in read:
+                self.player2.move("down")
+            if 'N' in read:
+                self.player2.move("stop")
+            
+            self.ser.flush()
+            
+            send = 'p{:3d}x{:3d}'.format(25,25)
+            self.ser.write('p{:3d}x{:3d}'.format(int(self.player1.score),int(self.player2.score)))
 
     def run(self):
         sair = False
