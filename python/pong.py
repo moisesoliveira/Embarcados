@@ -2,9 +2,8 @@ import pygame
 import random
 import os
 from pygame.locals import *
-
 import serial
-    
+
 class Game:
     def __init__(self, WIDTH = 800, HEIGHT = 600):
         self.time = pygame.time.Clock()

@@ -32,9 +32,13 @@ void init(){
 	gfx_mono_init();
 }
 
+void receiveplacar(){
+		for(i = 0; i < sizeof(rx_buffer) - 1; i++)
+			rx_buffer[i] = 0;
+	    usart_read_buffer_wait (&usart_instance, rx_buffer, MAX_RX_BUFFER_LENGTH);
+}
+
 void readbuffer(){
-	for(i = 0; i < sizeof(rx_buffer) - 1; i++)
-		rx_buffer[i] = 0;
 	usart_read_buffer_wait (&usart_instance, rx_buffer, MAX_RX_BUFFER_LENGTH);
 	if(rx_buffer[0] == 'p'){
 	    page_data[0] = rx_buffer[1];
@@ -46,6 +50,7 @@ void readbuffer(){
 	    page_data[5] = rx_buffer[7];
 }
 
+
 void saveEEPROM(){
 	eeprom_emulator_write_page(0, page_data);
 	eeprom_emulator_commit_page_buffer();
@@ -56,12 +61,13 @@ void saveEEPROM(){
 	page_data[3] = 255;
 	page_data[4] = 255;
 	page_data[5] = 255;
-	
+}
+
+void readEEPROM(){
 	eeprom_emulator_read_page(0, page_data);
 }
 
 void drawOLED(){
-	
 	for(i = 0; i < sizeof(rx_buffer) - 1; i++)
 		gfx_mono_draw_char(' ', i*SYSFONT_WIDTH, 3*SYSFONT_HEIGHT, &sysfont);
 	
@@ -90,25 +96,6 @@ void sendUp(){
     //delay_cycles_ms(50);															// Não tem necessidade o delay, eu acho
 }
 
-void sendDown(){
-    usart_write_buffer_wait(&usart_instance, pressButton2, sizeof(pressButton2));
-    usart_write_buffer_wait(&usart_instance, '\n', 1);
-    for(i = 0; i < sizeof(pressButton2) - 1; i++)
-	    gfx_mono_draw_char(pressButton2[i], i*SYSFONT_WIDTH, 2*SYSFONT_HEIGHT, &sysfont);
-    //delay_cycles_ms(50);															// Não tem necessidade o delay, eu acho
-}
-
-void sendButton3(){
-    usart_write_buffer_wait(&usart_instance, pressButton3, sizeof(pressButton3));
-    usart_write_buffer_wait(&usart_instance, '\n', 1);
-    for(i = 0; i < sizeof(pressButton3) - 1; i++)
-	    gfx_mono_draw_char(pressButton3[i], i*SYSFONT_WIDTH, 2*SYSFONT_HEIGHT, &sysfont);
-}
-
-void sendNone(){
-    usart_write_buffer_wait(&usart_instance, "None\n", sizeof("None"));
-    usart_write_buffer_wait(&usart_instance, '\n', 1);
-}
 
 void configure_usart(void){
 	struct usart_config config_usart;
@@ -196,20 +183,31 @@ int main (void){
 
 
 	do {
+        receiveplacar();
         readbuffer();
         if (rx_buffer[0] =='p'){
+            saveEEPROM();
+            readEEPROM();
             drawOLED();
-            saveEEPROM;
         }
-
+		
 		if(oled1_get_button_state(&oled1, OLED1_BUTTON1_ID)){
             sendUp();
 		} else if(oled1_get_button_state(&oled1, OLED1_BUTTON2_ID)){
-            sendDown();
+			usart_write_buffer_wait(&usart_instance, pressButton2, sizeof(pressButton2));
+			usart_write_buffer_wait(&usart_instance, '\n', 1);
+			for(i = 0; i < sizeof(pressButton2) - 1; i++)
+				gfx_mono_draw_char(pressButton2[i], i*SYSFONT_WIDTH, 2*SYSFONT_HEIGHT, &sysfont);
+			//delay_cycles_ms(50);															// Não tem necessidade o delay, eu acho
 		} else if(oled1_get_button_state(&oled1, OLED1_BUTTON3_ID)){
-            sendButton3();
+			usart_write_buffer_wait(&usart_instance, pressButton3, sizeof(pressButton3));
+			usart_write_buffer_wait(&usart_instance, '\n', 1);
+			for(i = 0; i < sizeof(pressButton3) - 1; i++)
+				gfx_mono_draw_char(pressButton3[i], i*SYSFONT_WIDTH, 2*SYSFONT_HEIGHT, &sysfont);
+			//delay_cycles_ms(50);															// Não tem necessidade o delay, eu acho
 		} else {
-            sendNone();
+			usart_write_buffer_wait(&usart_instance, "None\n", sizeof("None"));
+			usart_write_buffer_wait(&usart_instance, '\n', 1);
 		}
 	} while (true);
 }
